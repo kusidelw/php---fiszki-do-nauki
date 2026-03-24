@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap');
+
+:root {
+    --primary-color: #a37db3;
+    --accent-color: #e1cae4;
+    --bg-color: #f8f9fa;
+    --text-color: #683854;
+    --white: #ffffff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --footer-bg: #7a3e57;
+    --footer-text: rgba(255, 255, 255, 0.7);
+    --a-hoover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/*=====================================================================*/
+/*sekcja główna*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+
+    color: var(--text-color);
+    line-height: 1.6;
+    background-image: url('../obrazki/back.png');
+    background-size: cover;
+    background-attachment: center center;
+    background-repeat: no-repeat;
+
+}
+
+header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0px 0px 10px 0px;
+    text-align: center;
+    position: top;
+    width: 100%;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    margin: 0;
+    padding: 20px 0;
+    font-size: 2.5em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+nav {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 10px 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+}
+
+nav a {
+    text-decoration: none;
+    background-color: transparent;
+    color: var(--white);
+    padding: 10px 15px;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+
+
+nav a:hover {
+    color: var(--white);
+    background-color: var(--a-hoover-bg);
+    transform: translateY(-2px);
+}
+
+nav a:last-child {
+    background-color: var(--accent-color);
+    color: var(--white);
+    box-shadow: var(--shadow);
+}
+
+nav a:last-child:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: var(--shadow);
+}
+
+
+main {
+    padding: 3%;
+    margin-top: 0 auto;
+    background-color: var(--white);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    flex: 1;
+    margin-right: 10%;
+    margin-left: 10%;
+
+}
+
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    text-align: center;
+    padding: 10px 0;
+    bottom: 0;
+    margin-top: auto;
+    position: bottom;
+}
+
+footer strong {
+    color: var(--white);
+}
+
+footer a {
+    color:var(--footer-text);
+    text-decoration: none;
+}
