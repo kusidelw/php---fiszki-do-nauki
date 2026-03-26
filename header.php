@@ -12,8 +12,9 @@
 <body>
 
 <header>
-    <h1>LEARN IT</h1>
+    
     <nav class="nav">
+        <h1>LEARN IT</h1>
         <ul class="nav-list">
             <li><a href="index.php">Strona Główna</a></li>
             <li><a href=# > Fiszki</a></li>
