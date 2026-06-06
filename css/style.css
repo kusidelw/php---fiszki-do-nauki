@@ -171,8 +171,8 @@ nav ul {
 }
 
 .nav img {
-    width: 15%;
-    height: 15%;
+    width: 7%;
+    height:7%;
     vertical-align: middle;
     margin-right: 10px;
     margin-bottom: 0.2em;;
@@ -230,4 +230,29 @@ nav ul {
 .register-link a:hover {
     color: var(--hover-bg);
     text-decoration: underline;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: "Domine", serif; 
+    font-size: 16px;
+}
+
+.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    padding: 12px;
+    border: 1px solid #3c763d;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
 }

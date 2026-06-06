@@ -4,8 +4,7 @@ $user = 'root';
 $password = '';
 $dbname = 'LearnIt'; 
 
-// polaczenie z serwerem MySQL
-$conn = mysqli_connect($host, $user, $password);
+$conn = mysqli_connect($host, $user, $password, $dbname);
 
 if (!$conn) {
     die("Błąd połączenia: " . mysqli_connect_error());
