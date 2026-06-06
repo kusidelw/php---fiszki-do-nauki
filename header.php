@@ -18,7 +18,7 @@
         <ul class="nav-list">
             <li><a href="index.php">Strona Główna</a></li>
             <li><a href=# > Fiszki</a></li>
-            <li><a href=#> Zaloguj </a></li>
+            <li><a href=login.php> Zaloguj </a></li>
         </ul>
     </nav>
 
