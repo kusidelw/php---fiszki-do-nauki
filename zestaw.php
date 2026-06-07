@@ -56,7 +56,7 @@ $liczba_fiszek = mysqli_num_rows($result_fiszki);
             <a href="index.php" class="btn-outline">&larr; Wróć</a>
             
             <?php if ($liczba_fiszek > 0): ?>
-                <a href="nauka.php?id=<?php echo $id_zestawu; ?>" class="btn-primary btn-ucz-sie"><i class="fa-solid fa-play"></i> Rozpocznij naukę</a>
+                <a href="nauka_podglad.php?id=<?php echo $id_zestawu; ?>" class="btn-primary btn-ucz-sie"><i class="fa-solid fa-play"></i> Rozpocznij naukę</a>
             <?php endif; ?>
 
             <?php if ($czy_wlasciciel): ?>

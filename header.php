@@ -21,13 +21,13 @@ if (session_status() === PHP_SESSION_NONE) {
         <h1><img src="css/img/flash.png" alt="Flash Icon">LEARN IT</h1>
         <ul class="nav-list">
             <li><a href="index.php">Strona Główna</a></li>
-            <li><a href="#">Fiszki</a></li>
+            <li><a href="fiszki.php">Fiszki</a></li>
             
             <?php 
             // Magia dynamicznego nagłówka!
             if(isset($_SESSION['zalogowany']) && $_SESSION['zalogowany'] === true): 
             ?>
-                <li><a href="#">Witaj, <?php echo htmlspecialchars($_SESSION['imie']); ?>!</a></li>
+                <li><a href="profil.php">Witaj, <?php echo htmlspecialchars($_SESSION['imie']); ?>!</a></li>
                 <li><a href="logout.php">Wyloguj</a></li>
             <?php else: ?>
                 <li><a href="login.php">Zaloguj</a></li>

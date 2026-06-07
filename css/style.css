@@ -701,3 +701,353 @@ textarea {
     margin: 0;
     font-size: 1.1em;
 }
+
+/*=====================================================================*/
+/* STRONA Z FISZKAMI I WYSZUKIWARKA (fiszki.php) */
+
+.fiszki-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.fiszki-header h2 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.fiszki-header p {
+    color: var(--text-color);
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid var(--accent-color);
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-family: "Domine", serif;
+    outline: none;
+    transition: box-shadow 0.3s;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 10px rgba(177, 156, 217, 0.5);
+}
+
+.btn-search {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-search:hover {
+    background-color: var(--hover-bg);
+}
+
+.search-results-info {
+    margin-top: 15px;
+    font-size: 1.1em;
+}
+
+.btn-clear-search {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #d9534f;
+    text-decoration: none;
+    border-bottom: 1px solid #d9534f;
+}
+
+.btn-clear-search:hover {
+    color: #c9302c;
+}
+
+/*=====================================================================*/
+/* PANEL UŻYTKOWNIKA I ZARZĄDZANIE PROFILEM (profil.php) */
+
+.profil-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.profil-header h2 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.profil-header p {
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+
+.profil-layout {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.profil-form {
+    margin: 0;
+    width: 100%;
+    max-width: 400px; /* Trochę szerszy dla dłuższego adresu e-mail */
+}
+
+.profil-form h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.profil-hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+}
+
+.profil-zestawy {
+    flex: 1;
+    min-width: 300px;
+    max-width: 800px;
+}
+
+.profil-zestawy h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+
+/* Gęstsza siatka dla zestawów w profilu */
+.profil-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/*=====================================================================*/
+/* TRYB NAUKI - PRZEGLĄDANIE FISZEK (nauka_przeglad.php) */
+
+.nauka-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.nauka-header h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.nauka-opcje {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* Własny styl dla przełącznika "Losowa kolejność" */
+.switch-losowo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.switch-losowo input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.nauka-obszar {
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.postep-tekst {
+    font-size: 1.1em;
+    color: #888;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* KONTENER KARTY 3D */
+.fiszka-kontener {
+    width: 100%;
+    height: 380px;
+    perspective: 1000px; /* To tworzy efekt głębi 3D */
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+/* Wewnętrzny element, który bezpośrednio obraca przód i tył */
+.fiszka-wewnatrz {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d; /* Utrzymuje przód i tył w tej samej przestrzeni */
+}
+
+/* Klasa aktywowana przez JavaScript = Obrót o 180 stopni! */
+.fiszka-wewnatrz.odwrocona {
+    transform: rotateY(180deg);
+}
+
+/* Style wspólne dla "orła" i "reszki" */
+.fiszka-przod, .fiszka-tyl {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden; /* Ukrywa tył, gdy karta jest odwrócona */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white);
+    border: 3px solid var(--accent-color);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(150, 123, 182, 0.15);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Tył karty jest domyślnie obrócony o 180 stopni w przestrzeni 3D */
+.fiszka-tyl {
+    transform: rotateY(180deg);
+    background-color: #fcfaff; 
+}
+
+.fiszka-przod h3, .fiszka-tyl h3 {
+    font-size: 2.2em;
+    color: var(--primary-color);
+    margin: 20px 0;
+    word-break: break-word;
+}
+
+.fiszka-etykieta {
+    font-size: 0.9em;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.fiszka-wskazowka {
+    font-size: 0.9em;
+    color: #ccc;
+    margin-top: auto; /* Wypycha napis na dół karty */
+}
+
+/* PRZYCISKI UMIEM / NIE UMIEM */
+.nauka-sterowanie {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-sterowanie {
+    flex: 1;
+    max-width: 220px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-sterowanie:hover {
+    transform: translateY(-3px);
+}
+
+.btn-lewo {
+    background-color: #fff;
+    color: #d9534f;
+    border: 2px solid #d9534f;
+}
+
+.btn-lewo:hover {
+    background-color: #d9534f;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(217, 83, 79, 0.3);
+}
+
+.btn-prawo {
+    background-color: #fff;
+    color: #5cb85c;
+    border: 2px solid #5cb85c;
+}
+
+.btn-prawo:hover {
+    background-color: #5cb85c;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(92, 184, 92, 0.3);
+}
+
+/*=====================================================================*/
+/* DODATKI DO TRYBU NAUKI (Wskaźniki postępu i ekran sukcesu) */
+
+.nauka-postep-kontener {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.badge-postep {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.05em;
+    box-shadow: 0 4px 10px rgba(177, 156, 217, 0.3);
+}
+
+.badge-pozostalo {
+    display: inline-block;
+    background-color: #f3eff5; /* Jasny szary / lawendowy z tła */
+    color: var(--text-color);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.05em;
+    border: 2px solid var(--accent-color);
+}
+
+.ekran-koncowy {
+    padding: 60px 20px;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 3px dashed #5cb85c; /* Zielona ramka sukcesu */
+}
