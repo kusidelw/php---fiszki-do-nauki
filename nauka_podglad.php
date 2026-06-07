@@ -4,7 +4,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Jeśli nie ma ID w linku, wracamy na stronę główną
+// Blokada dla niezalogowanych
+if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: index.php");
     exit;
@@ -12,7 +17,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_zestawu = intval($_GET['id']);
 
-// Pobranie danych zestawu, aby wyświetlić tytuł
 $sql_zestaw = "SELECT tytul FROM zestaw WHERE id_zestawu = $id_zestawu";
 $res_zestaw = mysqli_query($conn, $sql_zestaw);
 if (mysqli_num_rows($res_zestaw) == 0) {
@@ -21,7 +25,6 @@ if (mysqli_num_rows($res_zestaw) == 0) {
 }
 $zestaw = mysqli_fetch_assoc($res_zestaw);
 
-// Pobranie samych słówek
 $sql_fiszki = "SELECT pojecie, definicja FROM fiszka WHERE id_zestawu = $id_zestawu";
 $res_fiszki = mysqli_query($conn, $sql_fiszki);
 
@@ -37,7 +40,7 @@ $fiszki_json = json_encode($fiszki);
 
 <main class="main-content">
     <div class="nauka-header">
-        <h2><?php echo htmlspecialchars($zestaw['tytul']); ?></h2>
+        <h2>Przeglądanie: <?php echo htmlspecialchars($zestaw['tytul']); ?></h2>
         <div class="nauka-opcje">
             <a href="zestaw.php?id=<?php echo $id_zestawu; ?>" class="btn-outline">&larr; Wróć do zestawu</a>
             <label class="switch-losowo">
@@ -81,10 +84,10 @@ $fiszki_json = json_encode($fiszki);
                 </div>
             </div>
 
-            <div id="ekran-koncowy" class="ekran-koncowy" style="display: none;">
-                <h3 style="color: #5cb85c; font-size: 2.5em; margin-bottom: 10px;">Gratulacje! 🎉</h3>
-                <p style="font-size: 1.2em; color: var(--text-color); margin-bottom: 30px;">Opanowałeś wszystkie słówka z tego zestawu w tej sesji.</p>
-                <div style="display: flex; gap: 20px; justify-content: center;">
+            <div id="ekran-koncowy" class="ekran-koncowy hidden">
+                <h3 class="success-title">Gratulacje! 🎉</h3>
+                <p class="success-text">Opanowałaś wszystkie słówka z tego zestawu w tej sesji.</p>
+                <div class="ekran-koncowy-akcje">
                     <button class="btn-primary" onclick="zresetujNauke()"><i class="fa-solid fa-rotate-right"></i> Ucz się ponownie</button>
                     <a href="zestaw.php?id=<?php echo $id_zestawu; ?>" class="btn-outline">Wróć do zestawu</a>
                 </div>
@@ -92,13 +95,11 @@ $fiszki_json = json_encode($fiszki);
         </div>
 
         <script>
-            // Przejmujemy zmienną z PHP
             const oryginalneFiszki = <?php echo $fiszki_json; ?>;
-            let doNauki = [...oryginalneFiszki]; // "Talia" kart, które musimy jeszcze powtórzyć
+            let doNauki = [...oryginalneFiszki];
             let opanowane = 0;
             let obecnyIndeks = 0;
             
-            // Elementy DOM
             const tekstPrzod = document.getElementById('tekst-przod');
             const tekstTyl = document.getElementById('tekst-tyl');
             const licznikZnanych = document.getElementById('licznik-znanych');
@@ -109,19 +110,16 @@ $fiszki_json = json_encode($fiszki);
             const checkboxLosowo = document.getElementById('losowa-kolejnosc');
 
             function wyswietlKarte() {
-                // Sprawdzamy, czy wszystkie karty zostały odgadnięte
                 if(doNauki.length === 0) {
-                    obszarKarty.style.display = 'none';
-                    ekranKoncowy.style.display = 'block';
+                    obszarKarty.classList.add('hidden');
+                    ekranKoncowy.classList.remove('hidden');
                     return;
                 }
                 
-                // Jeśli doszliśmy do końca "kolejki", zaczynamy przeglądanie od początku (ale tylko tych nieodgadniętych)
                 if (obecnyIndeks >= doNauki.length) {
                     obecnyIndeks = 0;
                 }
                 
-                // Zawsze ustawiamy przód karty
                 kartaWewnatrz.classList.remove('odwrocona');
                 
                 setTimeout(() => {
@@ -137,22 +135,14 @@ $fiszki_json = json_encode($fiszki);
 
             function klikUmiem() {
                 if (doNauki.length === 0) return;
-                
-                // Usuwamy fiszkę z "talii" do nauki
                 doNauki.splice(obecnyIndeks, 1);
-                
-                // Zwiększamy statystyki
                 opanowane++;
                 licznikZnanych.innerText = opanowane;
-                
-                // Nie zwiększamy 'obecnyIndeks', bo tablica się skurczyła i następny element automatycznie "wpadł" na to samo miejsce
                 wyswietlKarte();
             }
 
             function klikNieUmiem() {
                 if (doNauki.length === 0) return;
-                
-                // Przeskakujemy do następnej karty (obecna wciąż zostaje w tablicy do ponownej powtórki)
                 obecnyIndeks++;
                 wyswietlKarte();
             }
@@ -168,7 +158,6 @@ $fiszki_json = json_encode($fiszki);
             }
 
             function zresetujNauke() {
-                // Odnawiamy całą "talię"
                 doNauki = [...oryginalneFiszki];
                 if (checkboxLosowo.checked) {
                     doNauki = przetasuj(doNauki);
@@ -176,29 +165,21 @@ $fiszki_json = json_encode($fiszki);
                 opanowane = 0;
                 obecnyIndeks = 0;
                 
-                // Resetujemy wyświetlacze
                 licznikZnanych.innerText = opanowane;
                 pozostaloWyswietlacz.innerText = doNauki.length;
                 
-                // Przywracamy widok karty i chowamy sukces
-                obszarKarty.style.display = 'block';
-                ekranKoncowy.style.display = 'none';
+                obszarKarty.classList.remove('hidden');
+                ekranKoncowy.classList.add('hidden');
                 wyswietlKarte();
             }
 
-            // Obsługa przełącznika losowej kolejności
-            checkboxLosowo.addEventListener('change', function() {
-                zresetujNauke();
-            });
-
-            // Start pierwszej rundy!
+            checkboxLosowo.addEventListener('change', zresetujNauke);
             wyswietlKarte();
         </script>
         
     <?php else: ?>
         <div class="empty-state">
-            Ten zestaw nie ma jeszcze żadnych fiszek. 
-            <a href="edytuj_zestaw.php?id=<?php echo $id_zestawu; ?>">Wróć, aby je dodać.</a>
+            Ten zestaw nie ma jeszcze żadnych fiszek.
         </div>
     <?php endif; ?>
 </main>

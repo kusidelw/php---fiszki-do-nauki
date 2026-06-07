@@ -306,10 +306,73 @@ input[type="date"] {
 }
 
 /* Siatka kart z fiszkami */
+/* Siatka kart z fiszkami - Wymuszone 4 kolumny na pulpitach */
+/*=====================================================================*/
+/* W PEŁNI RESPONSYWNA SIATKA KART (Fiszki i popularne) */
+
+/*=====================================================================*/
+/* PERFEKCYJNA SIATKA KART (Flexbox z centrowaniem) */
+
 .sets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Zawsze centruje karty, nawet te w nowym rzędzie */
+    gap: 25px;
+}
+
+.set-card {
+    flex: 1 1 220px;      /* Karta bazowo ma 220px, ale płynnie rośnie i maleje */
+    max-width: 280px;     /* Blokada, żeby "samotna" karta nie zajęła całego ekranu */
+    display: flex;
+    flex-direction: column;
+    /* Poniżej zachowane Twoje dotychczasowe style karty */
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.set-card:hover {
+    transform: translateY(-5px);
+}
+
+.set-card h4 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    min-height: 2.8em; /* Zapobiega "skakaniu" przycisków przy krótszych tytułach */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.set-card .btn-study,
+.set-card .action-links {
+    margin-top: auto; /* Magiczny trik flexboxa: spycha przyciski na sam dół karty */
+}
+
+/* Responsywność dla mniejszych ekranów (np. tablety, laptopy) */
+@media (max-width: 1200px) {
+    .sets-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .sets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsywność dla telefonów */
+@media (max-width: 600px) {
+    .sets-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .set-card {
@@ -1050,4 +1113,256 @@ textarea {
     border-radius: 20px;
     box-shadow: var(--shadow);
     border: 3px dashed #5cb85c; /* Zielona ramka sukcesu */
+}
+
+/*=====================================================================*/
+/* DOSTOSOWANIE DLA TRYBU PISANIA ORAZ BLOKAD */
+
+.locked-info-text {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 10px 20px;
+    border: 1px solid #ffeeba;
+    border-radius: 30px;
+    font-size: 0.95em;
+    font-weight: bold;
+}
+
+.locked-info-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.pisanie-obszar {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.pisanie-status-panel {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.badge-runda {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.pisanie-box {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 35px;
+}
+
+.pisanie-label {
+    font-size: 0.9em;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.pisanie-pytanie-tekst {
+    font-size: 2em;
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Klasa systemowa do ukrywania elementów HTML bez używania stylów inline */
+.hidden {
+    display: none !important;
+}
+
+/* Wiadomości zwrotne w trybie pisania */
+.success-msg {
+    color: #5cb85c;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+.error-msg {
+    color: #d9534f;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+#feedback-szczegoly {
+    background: #fdf7f7;
+    padding: 10px;
+    border-left: 4px solid #d9534f;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+
+.success-title {
+    color: #5cb85c;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.success-text {
+    font-size: 1.2em;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+.ekran-koncowy-akcje {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/*=====================================================================*/
+/* PANEL ADMINISTRATORA (Wspólne style i Tabele) */
+
+.nav-admin-link {
+    color: #ffd700 !important; /* Złoty kolor dla admina w menu */
+    font-weight: bold;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admin-header h2 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.admin-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.btn-admin {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-admin:hover, .btn-admin.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.admin-section {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+}
+
+.admin-section h3 {
+    color: var(--text-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Stylowanie Tabeli Admina */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.admin-table th, .admin-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    background-color: #f9f7fc;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.admin-table tr:hover {
+    background-color: #faf8fc;
+}
+
+/* Odznaki ról i statusów */
+.badge-rola {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.rola-admin {
+    background-color: #ffed4a;
+    color: #856404;
+}
+
+.rola-user {
+    background-color: #e2d9f3;
+    color: var(--primary-color);
+}
+
+.status-aktywny {
+    color: #5cb85c;
+    font-weight: bold;
+}
+
+.status-zablokowany {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.text-muted {
+    color: #aaa;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Przyciski w tabeli */
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--white);
+    transition: opacity 0.2s;
+    display: inline-block;
+}
+
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+.btn-block {
+    background-color: #d9534f;
+}
+
+.btn-unblock {
+    background-color: #5cb85c;
 }

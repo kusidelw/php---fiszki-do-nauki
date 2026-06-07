@@ -19,12 +19,23 @@ Platforma pozwala na tworzenie, edytowanie i udostępnianie interaktywnych zesta
 ## Konta testowe do logowania
 Po poprawnej instalacji systemu, można skorzystać z poniższych kont testowych:
 
-**Konto Administratora:**
-* Login: `admin`
-* Hasło: `admin123`
+## Konta testowe do logowania
 
-**Konta Zwykłych Użytkowników (User):**
-* Login: `janek`
-* Hasło: `user123`
-* Login: `anna`
-* Hasło: `user123`
+
+**Konto Administratora (Pełen dostęp, moderacja, zarządzanie):**
+* **Login:** `admin`
+* **Hasło:** `admin123`
+
+**Konta Zwykłych Użytkowników (Tworzenie fiszek, tryby nauki):**
+Wszyscy poniżsi użytkownicy posiadają to samo hasło: `user123`
+
+1.  **Login:** `tomek` (Tomasz Kowalski)
+2.  **Login:** `kasia` (Katarzyna Nowak)
+3.  **Login:** `marek` (Marek Wiśniewski)
+4.  **Login:** `zosia` (Zofia Wójcik)
+5.  **Login:** `piotr` (Piotr Kowalczyk)
+6.  **Login:** `magda` (Magdalena Kamińska)
+7.  **Login:** `kamil` (Kamil Lewandowski)
+8.  **Login:** `ola` (Aleksandra Zielińska)
+9.  **Login:** `michal` (Michał Szymański)
+10. **Login:** `natalia` (Natalia Dąbrowska)

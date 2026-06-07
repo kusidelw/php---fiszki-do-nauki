@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Zabezpieczenie przed brakiem ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: index.php");
     exit;
@@ -12,14 +11,12 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_zestawu = intval($_GET['id']);
 
-// Pobieramy informacje o zestawie oraz login autora (żeby go wyświetlić!)
 $sql_sprawdz = "SELECT z.tytul, z.opis, z.id_uzytkownika, u.login AS autor 
                 FROM zestaw z 
                 JOIN uzytkownik u ON z.id_uzytkownika = u.id_uzytkownika 
                 WHERE z.id_zestawu = $id_zestawu";
 $result_sprawdz = mysqli_query($conn, $sql_sprawdz);
 
-// Jeśli zestaw nie istnieje, wracamy na główną
 if (mysqli_num_rows($result_sprawdz) == 0) {
     header("Location: index.php");
     exit;
@@ -27,15 +24,15 @@ if (mysqli_num_rows($result_sprawdz) == 0) {
 
 $zestaw = mysqli_fetch_assoc($result_sprawdz);
 
-// Sprawdzamy, czy osoba przeglądająca stronę to właściciel tego zestawu
 $czy_wlasciciel = false;
+$czy_zalogowany = false;
 if (isset($_SESSION['zalogowany']) && $_SESSION['zalogowany'] === true) {
+    $czy_zalogowany = true;
     if ($_SESSION['id_uzytkownika'] == $zestaw['id_uzytkownika']) {
         $czy_wlasciciel = true;
     }
 }
 
-// Pobieramy fiszki do wyświetlenia
 $sql_fiszki = "SELECT pojecie, definicja FROM fiszka WHERE id_zestawu = $id_zestawu";
 $result_fiszki = mysqli_query($conn, $sql_fiszki);
 $liczba_fiszek = mysqli_num_rows($result_fiszki);
@@ -53,10 +50,17 @@ $liczba_fiszek = mysqli_num_rows($result_fiszki);
         <?php endif; ?>
         
         <div class="zestaw-akcje-glowne">
-            <a href="index.php" class="btn-outline">&larr; Wróć</a>
+            <a href="index.php" class="btn-outline">&larr; Wróć do kokpitu</a>
             
             <?php if ($liczba_fiszek > 0): ?>
-                <a href="nauka_podglad.php?id=<?php echo $id_zestawu; ?>" class="btn-primary btn-ucz-sie"><i class="fa-solid fa-play"></i> Rozpocznij naukę</a>
+                <?php if ($czy_zalogowany): ?>
+                    <a href="nauka_podglad.php?id=<?php echo $id_zestawu; ?>" class="btn-primary btn-ucz-sie"><i class="fa-solid fa-play"></i> Przeglądanie</a>
+                    <a href="nauka_pisanie.php?id=<?php echo $id_zestawu; ?>" class="btn-primary btn-ucz-sie"><i class="fa-solid fa-keyboard"></i> Pisanie</a>
+                <?php else: ?>
+                    <p class="locked-info-text">
+                        <i class="fa-solid fa-lock"></i> <a href="login.php">Zaloguj się</a>, aby odblokować interaktywne tryby nauki.
+                    </p>
+                <?php endif; ?>
             <?php endif; ?>
 
             <?php if ($czy_wlasciciel): ?>
@@ -72,7 +76,6 @@ $liczba_fiszek = mysqli_num_rows($result_fiszki);
             <?php
             if ($liczba_fiszek > 0) {
                 while ($fiszka = mysqli_fetch_assoc($result_fiszki)) {
-                    // Czysta karta fiszki, po lewej pojęcie, po prawej/na dole definicja
                     echo '<div class="fiszka-card-read">';
                     echo '<h4>' . htmlspecialchars($fiszka['pojecie']) . '</h4>';
                     echo '<hr>';

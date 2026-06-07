@@ -76,7 +76,7 @@ $id_zalogowanego = $czy_zalogowany ? $_SESSION['id_uzytkownika'] : 0;
 
             // Losowe pobieranie zestawów innych osób (LIMIT 8, żeby nie przytłoczyć strony)
             // Jeśli szukamy, pokazujemy po prostu pasujące
-            $sortowanie = empty($szukana_fraza) ? "ORDER BY RAND() LIMIT 8" : "ORDER BY z.data_utworzenia DESC";
+            $sortowanie = empty($szukana_fraza) ? "ORDER BY RAND() LIMIT 10" : "ORDER BY z.data_utworzenia DESC";
 
             $sql_inne = "SELECT z.id_zestawu, z.tytul, z.liczba_fiszek, k.nazwa AS kategoria_nazwa, u.login AS autor 
                          FROM zestaw z 
