@@ -32,6 +32,10 @@ body {
     background-repeat: no-repeat;
 
 }
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
 
 header {
     background-color: var(--primary-color);
@@ -397,4 +401,303 @@ input[type="date"] {
     max-width: 600px;
     margin: 0 auto;
     color: var(--text-color);
+}
+
+/*=====================================================================*/
+/* WIDOK KONKRETNEGO ZESTAWU (zestaw.php) */
+
+.zestaw-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.zestaw-header h2 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.zestaw-header p {
+    font-size: 1.2em;
+    color: var(--text-color);
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+}
+
+.zestaw-layout {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* Nadpisanie marginesów dla formularza dodawania fiszki */
+.dodaj-fiszke-form {
+    margin: 0;
+    width: 100%;
+    max-width: 350px;
+}
+
+.dodaj-fiszke-form h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* Prawa kolumna z listą dodanych fiszek */
+.fiszki-lista {
+    flex: 1;
+    min-width: 300px;
+    max-width: 700px;
+}
+
+.fiszki-lista h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+
+.fiszki-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.fiszka-card {
+    background: var(--white);
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(150, 123, 182, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.fiszka-card:hover {
+    transform: translateY(-3px);
+}
+
+.fiszka-card h4 {
+    color: var(--primary-color);
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.fiszka-card p {
+    color: var(--text-color);
+    margin: 0;
+    font-size: 1.1em;
+}
+
+/*=====================================================================*/
+/* FORMULARZ DODAWANIA ZESTAWU (dodaj_zestaw.php) */
+
+.dodaj-zestaw-form {
+    max-width: 600px; /* Nieco szerszy niż standardowe logowanie */
+}
+
+/* Stylowanie dla listy rozwijanej (select) i pola tekstowego (textarea),
+   jeśli jeszcze ich nie dodałaś wcześniej */
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: "Domine", serif; 
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical; /* Pozwala na rozciąganie tylko w pionie */
+}
+
+/*=====================================================================*/
+/* AKCJE NA FISZKACH (Edycja/Usuwanie) */
+
+.action-links {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.link-edit {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.link-edit:hover {
+    color: var(--hover-bg);
+}
+
+.link-delete {
+    color: #d9534f;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.link-delete:hover {
+    color: #c9302c;
+}
+
+/*=====================================================================*/
+/* WIDOK EDYCJI FISZKI W MIEJSCU (Inline Edit) */
+
+.fiszka-card.edit-mode {
+    border-color: #f0ad4e; /* Złoty kolor wyróżniający edycję */
+    box-shadow: 0 0 10px rgba(240, 173, 78, 0.3);
+}
+
+.edit-input, 
+.edit-textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: "Domine", serif;
+    box-sizing: border-box;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-save {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    width: auto; /* Nadpisuje width: 100% z głównych stylów form */
+}
+
+.btn-save:hover {
+    background-color: #4cae4c;
+}
+
+.btn-cancel {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid #ccc;
+    padding: 7px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #eee;
+}
+
+/*=====================================================================*/
+/* WIDOK DO NAUKI (zestaw.php - tylko odczyt) */
+
+.zestaw-autor {
+    color: #888;
+    font-size: 0.9em;
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+.zestaw-akcje-glowne {
+    margin-top: 25px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-ucz-sie {
+    margin: 0 15px;
+    padding: 12px 35px;
+    font-size: 1.2em;
+}
+
+.btn-edit-main {
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-edit-main:hover {
+    background-color: var(--hover-bg);
+}
+
+.fiszki-lista-full {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.fiszki-naglowek {
+    text-align: center;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.fiszki-grid-large {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Karta w trybie tylko do odczytu - minimalistyczna */
+.fiszka-card-read {
+    background: var(--white);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(150, 123, 182, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.fiszka-card-read:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(150, 123, 182, 0.2);
+}
+
+.fiszka-card-read h4 {
+    color: var(--primary-color);
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.fiszka-card-read hr {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 10px 0;
+}
+
+.fiszka-card-read p {
+    color: var(--text-color);
+    margin: 0;
+    font-size: 1.1em;
 }

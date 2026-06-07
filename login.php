@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result && mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
-            
+
             if (password_verify($haslo, $row['haslo'])) {
                 $_SESSION['zalogowany'] = true;
                 $_SESSION['id_uzytkownika'] = $row['id_uzytkownika'];
@@ -45,7 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <main>
     <div class="login-container">
         <h2>Logowanie</h2>
-        <?php if (!empty($blad)) { echo "<p class='error'>$blad</p>"; } ?>
+        <?php if (!empty($blad)) {
+            echo "<p class='error'>$blad</p>";
+        } ?>
         <form method="post" action="login.php">
             <label for="login">Login:</label>
             <input type="text" id="login" name="login" required>
@@ -55,8 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit">Zaloguj</button>
             <p class="register-link">Nie masz jeszcze konta? <strong><a href="register.php"> Zarejestruj się tutaj</a></strong></p>
-    </div>
+
         </form>
+    </div>
     </div>
 </main>
 <?php include 'footer.php'; ?>
