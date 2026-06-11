@@ -123,7 +123,7 @@ if (file_exists('install.lock')) {
 
         case 3:
             require_once 'config.php';
-            global $conn; // Ta linijka mówi edytorowi: "Spokojnie, ta zmienna tu jest!"
+            global $conn; 
             echo "<p>Tworzenie tabel w bazie <b>$dbname</b>:</p>";
 
             $create = [
@@ -188,21 +188,17 @@ if (file_exists('install.lock')) {
             global $conn;
             ini_set('max_execution_time', 300);
 
-            // Wypełnianie Ról Systemowych
             mysqli_query($conn, "INSERT INTO rola (id_roli, nazwa) VALUES (1, 'admin'), (2, 'user'), (3, 'guest')");
             
-            // Wypełnianie Języków (Kategorii)
             $jezyki = ['Angielski', 'Hiszpański', 'Niemiecki', 'Francuski', 'Włoski', 'Inna'];
             foreach ($jezyki as $j) {
                 mysqli_query($conn, "INSERT INTO kategoria (nazwa) VALUES ('$j')");
             }
-
-            // Tworzenie Administratora
             $hashed_admin = password_hash('admin123', PASSWORD_DEFAULT);
             mysqli_query($conn, "INSERT INTO uzytkownik (id_roli, login, haslo, email, imie, nazwisko, czy_aktywny) 
                                  VALUES (1, 'admin', '$hashed_admin', 'admin@learnit.pl', 'Admin', 'Główny', 1)");
 
-            // --- POBIERANIE SŁÓWEK Z PLIKU CSV ---
+
             $slowka = [];
             if (($handle = fopen("slowka.csv", "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
@@ -221,7 +217,6 @@ if (file_exists('install.lock')) {
 
             $paczki = array_chunk($slowka, 50);
 
-            // Tworzenie 10 użytkowników testowych
             $hashed_user = password_hash('user123', PASSWORD_DEFAULT);
             $uzytkownicy = [
                 ['tomek', 'Tomasz'], ['kasia', 'Katarzyna'], ['marek', 'Marek'],
@@ -259,7 +254,7 @@ if (file_exists('install.lock')) {
                 }
             }
 
-            // TWORZENIE PLIKU BLOKADY
+      
             file_put_contents('install.lock', 'Zabezpieczenie przed nadpisaniem bazy. Aby ponownie uruchomic instalator, usun ten plik z serwera.');
 
             echo "<div class='success'>

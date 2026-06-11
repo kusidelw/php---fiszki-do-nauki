@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if (mysqli_query($conn, $sql)) {
             $nowy_id = mysqli_insert_id($conn);
-            header("Location: zestaw.php?id=" . $nowy_id);
+            header("Location: edytuj_zestaw.php?id=" . $nowy_id);
             exit;
         } else {
             $blad = "Wystąpił błąd podczas dodawania zestawu: " . mysqli_error($conn);
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select id="kategoria" name="kategoria" required>
                 <option value="">Wybierz kategorię...</option>
                 <?php
-                // Pobieramy języki bezpośrednio z bazy
+               
                 $sql_kat = "SELECT id_kategorii, nazwa FROM kategoria ORDER BY nazwa ASC";
                 $res_kat = mysqli_query($conn, $sql_kat);
                 
