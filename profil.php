@@ -21,7 +21,8 @@ if (isset($_GET['usun_zestaw'])) {
         exit;
     }
 }
--
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) {
     $imie = mysqli_real_escape_string($conn, trim($_POST['imie']));
     $nazwisko = mysqli_real_escape_string($conn, trim($_POST['nazwisko']));
@@ -29,10 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) 
     $telefon = mysqli_real_escape_string($conn, trim($_POST['telefon']));
     $nowe_haslo = trim($_POST['nowe_haslo']);
 
-  
     $_SESSION['imie'] = $imie;
 
-  
+    // Sprawdzamy, czy użytkownik chce zmienić hasło
     if (!empty($nowe_haslo)) {
         $hashed = password_hash($nowe_haslo, PASSWORD_DEFAULT);
         $sql_upd = "UPDATE uzytkownik SET imie='$imie', nazwisko='$nazwisko', email='$email', telefon='$telefon', haslo='$hashed' WHERE id_uzytkownika=$id_uz";
@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) 
         $komunikat = "<div class='error'>Błąd podczas aktualizacji: " . mysqli_error($conn) . "</div>";
     }
 }
+
 
 $sql_dane = "SELECT * FROM uzytkownik WHERE id_uzytkownika = $id_uz";
 $res_dane = mysqli_query($conn, $sql_dane);
@@ -110,7 +111,7 @@ $res_moje_zestawy = mysqli_query($conn, $sql_moje_zestawy);
                         
                         echo '<div class="action-links">';
                         echo '<a href="edytuj_zestaw.php?id=' . $row['id_zestawu'] . '" class="link-edit"><i class="fa-solid fa-pen"></i> Edytuj</a>';
-                        // Przycisk usunięcia zestawu z wbudowanym ostrzeżeniem w JS
+                     
                         echo '<a href="profil.php?usun_zestaw=' . $row['id_zestawu'] . '" class="link-delete" onclick="return confirm(\'UWAGA: Trwale usuniesz ten zestaw i wszystkie jego fiszki. Czy na pewno?\')"><i class="fa-solid fa-trash"></i> Usuń</a>';
                         echo '</div>';
                         
