@@ -104,14 +104,13 @@ $result_fiszki = mysqli_query($conn, $sql_fiszki);
             
             <div class="fiszki-grid">
                 <?php
-                // Sprawdzamy, czy użytkownik kliknął "Edytuj" dla konkretnej fiszki
+               
                 $id_w_edycji = isset($_GET['edytuj_fiszke']) ? intval($_GET['edytuj_fiszke']) : 0;
 
                 if (mysqli_num_rows($result_fiszki) > 0) {
                     while ($fiszka = mysqli_fetch_assoc($result_fiszki)) {
                         
                         if ($id_w_edycji === $fiszka['id_fiszki']) {
-                            // --- WIDOK: FORMULARZ EDYCJI (Zapisz / Anuluj) ---
                             echo '<div class="fiszka-card edit-mode">';
                             echo '<form method="post" action="edytuj_zestaw.php?id='.$id_zestawu.'">';
                             echo '<input type="hidden" name="id_fiszki" value="'.$fiszka['id_fiszki'].'">';
@@ -124,13 +123,13 @@ $result_fiszki = mysqli_query($conn, $sql_fiszki);
                             echo '</form>';
                             echo '</div>';
                         } else {
-                            // --- WIDOK: STANDARDOWA KARTA (Edytuj / Usuń) ---
+                            
                             echo '<div class="fiszka-card">';
                             echo '<h4>' . htmlspecialchars($fiszka['pojecie']) . '</h4>';
                             echo '<p>' . htmlspecialchars($fiszka['definicja']) . '</p>';
                             echo '<div class="action-links">';
                             echo '<a href="edytuj_zestaw.php?id='.$id_zestawu.'&edytuj_fiszke='.$fiszka['id_fiszki'].'" class="link-edit"><i class="fa-solid fa-pen"></i> Edytuj</a>';
-                            // Atrybut onclick z JS potwierdza chęć usunięcia fiszki
+                            
                             echo '<a href="edytuj_zestaw.php?id='.$id_zestawu.'&usun_fiszke='.$fiszka['id_fiszki'].'" class="link-delete" onclick="return confirm(\'Na pewno usunąć tę fiszkę z zestawu?\')"><i class="fa-solid fa-trash"></i> Usuń</a>';
                             echo '</div>';
                             echo '</div>';

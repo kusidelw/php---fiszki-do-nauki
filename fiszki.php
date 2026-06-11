@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Pobieramy frazę wyszukiwania, jeśli istnieje
 $szukana_fraza = '';
 if (isset($_GET['szukaj'])) {
     $szukana_fraza = mysqli_real_escape_string($conn, trim($_GET['szukaj']));
@@ -68,14 +67,11 @@ $id_zalogowanego = $czy_zalogowany ? $_SESSION['id_uzytkownika'] : 0;
         <h3><?php echo empty($szukana_fraza) ? 'Odkrywaj zestawy' : 'Znalezione zestawy'; ?></h3>
         <div class="sets-grid">
             <?php
-            // Podstawowe zapytanie - szukamy tylko zestawów innych użytkowników
             $warunek_wyszukiwania = "";
             if (!empty($szukana_fraza)) {
                 $warunek_wyszukiwania = "AND z.tytul LIKE '%$szukana_fraza%'";
             }
 
-            // Losowe pobieranie zestawów innych osób (LIMIT 8, żeby nie przytłoczyć strony)
-            // Jeśli szukamy, pokazujemy po prostu pasujące
             $sortowanie = empty($szukana_fraza) ? "ORDER BY RAND() LIMIT 10" : "ORDER BY z.data_utworzenia DESC";
 
             $sql_inne = "SELECT z.id_zestawu, z.tytul, z.liczba_fiszek, k.nazwa AS kategoria_nazwa, u.login AS autor 
@@ -89,7 +85,7 @@ $id_zalogowanego = $czy_zalogowany ? $_SESSION['id_uzytkownika'] : 0;
 
             if (mysqli_num_rows($res_inne) > 0) {
                 while ($row = mysqli_fetch_assoc($res_inne)) {
-                    // Dodajemy klasę popular-card, żeby odróżnić zestawy społeczności
+                  
                     echo '<div class="set-card popular-card">';
                     echo '<h4>' . htmlspecialchars($row['tytul']) . '</h4>';
                     echo '<span class="set-category">' . htmlspecialchars($row['kategoria_nazwa']) . '</span>';

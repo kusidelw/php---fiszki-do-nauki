@@ -3,8 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once 'config.php';
-
-// TARCZA OBRONNA: Tylko dla zalogowanych administratorów (id_roli == 1)
 if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SESSION['id_roli'] != 1) {
     header("Location: index.php");
     exit;
@@ -12,12 +10,9 @@ if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SES
 
 $komunikat = '';
 
-// --- AKCJA: Zmiana statusu użytkownika (Blokowanie / Odblokowywanie) ---
 if (isset($_GET['zmien_status']) && isset($_GET['id'])) {
     $id_do_zmiany = intval($_GET['id']);
     $nowy_status = intval($_GET['zmien_status']);
-    
-    // Zabezpieczenie: Admin nie może zablokować sam siebie
     if ($id_do_zmiany !== $_SESSION['id_uzytkownika']) {
         $sql_status = "UPDATE uzytkownik SET czy_aktywny = $nowy_status WHERE id_uzytkownika = $id_do_zmiany";
         if (mysqli_query($conn, $sql_status)) {
@@ -29,8 +24,6 @@ if (isset($_GET['zmien_status']) && isset($_GET['id'])) {
         $komunikat = "<div class='error'>Nie możesz zablokować własnego konta!</div>";
     }
 }
-
-// Pobieranie listy wszystkich użytkowników
 $sql_uzytkownicy = "SELECT u.id_uzytkownika, u.login, u.email, u.imie, u.nazwisko, u.czy_aktywny, r.nazwa AS rola_nazwa 
                     FROM uzytkownik u 
                     JOIN rola r ON u.id_roli = r.id_roli 

@@ -6,7 +6,7 @@
                 Apikacje Interentowe<br>
                 
             </p>
-            <a href="#" target="_blank">Pobierz specyfikację projektową</a>
+            <a href="a_i.pdf" target="_blank">Pobierz specyfikację projektową</a>
 
 
         </div>

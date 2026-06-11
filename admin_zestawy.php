@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// TARCZA OBRONNA: Tylko dla zalogowanego administratora
+
 if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SESSION['id_roli'] != 1) {
     header("Location: index.php");
     exit;
@@ -12,11 +12,9 @@ if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SES
 
 $komunikat = '';
 
-// --- AKCJA: USUWANIE DOWOLNEGO ZESTAWU PRZEZ ADMINA ---
 if (isset($_GET['usun_zestaw'])) {
     $id_zestawu_usun = intval($_GET['usun_zestaw']);
     
-    // ON DELETE CASCADE w bazie automatycznie wyczyści fiszki przypisane do tego zestawu
     $sql_del = "DELETE FROM zestaw WHERE id_zestawu = $id_zestawu_usun";
     
     if (mysqli_query($conn, $sql_del)) {
@@ -25,8 +23,6 @@ if (isset($_GET['usun_zestaw'])) {
         $komunikat = "<div class='error'>Błąd podczas usuwania zestawu: " . mysqli_error($conn) . "</div>";
     }
 }
-
-// Pobieranie wszystkich zestawów z całego systemu wraz z danymi o autorze i kategorii
 $sql_wszystkie_zestawy = "SELECT z.id_zestawu, z.tytul, z.liczba_fiszek, z.data_utworzenia, k.nazwa AS kategoria_nazwa, u.login AS autor_login 
                           FROM zestaw z 
                           JOIN kategoria k ON z.id_kategorii = k.id_kategorii 

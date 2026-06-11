@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Zabezpieczenie przed nieautoryzowanym dostępem
 if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SESSION['id_uzytkownika'] != 1) {
     header("Location: index.php");
     exit;
@@ -12,12 +11,10 @@ if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true || $_SES
 
 $komunikat = '';
 
-// --- AKCJA 1: DODAWANIE NOWEJ KATEGORII ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dodaj_kategorie'])) {
     $nazwa = mysqli_real_escape_string($conn, trim($_POST['nazwa_kategorii']));
     
     if (!empty($nazwa)) {
-        // Sprawdzamy czy kategoria już istnieje
         $check = mysqli_query($conn, "SELECT id_kategorii FROM kategoria WHERE nazwa = '$nazwa'");
         if (mysqli_num_rows($check) == 0) {
             $sql_add = "INSERT INTO kategoria (nazwa) VALUES ('$nazwa')";
@@ -30,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dodaj_kategorie'])) {
     }
 }
 
-// --- AKCJA 2: ZAPISYWANIE EDYTOWANEJ KATEGORII ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['zapisz_kategorie'])) {
     $id_kat = intval($_POST['id_kategorii']);
     $nowa_nazwa = mysqli_real_escape_string($conn, trim($_POST['nazwa']));
@@ -44,11 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['zapisz_kategorie'])) {
     }
 }
 
-// --- AKCJA 3: USUWANIE KATEGORII ---
 if (isset($_GET['usun_kategorie'])) {
     $id_usun = intval($_GET['usun_kategorie']);
     
-    // ON DELETE CASCADE w bazie zajmie się usunięciem powiązanych zestawów i fiszek
     $sql_del = "DELETE FROM kategoria WHERE id_kategorii = $id_usun";
     if (mysqli_query($conn, $sql_del)) {
         $komunikat = "<div class='success'>Kategoria została pomyślnie usunięta.</div>";
@@ -57,7 +51,6 @@ if (isset($_GET['usun_kategorie'])) {
     }
 }
 
-// Pobieranie wszystkich kategorii posortowanych alfabetycznie
 $sql_kategorie = "SELECT id_kategorii, nazwa FROM kategoria ORDER BY nazwa ASC";
 $res_kategorie = mysqli_query($conn, $sql_kategorie);
 ?>

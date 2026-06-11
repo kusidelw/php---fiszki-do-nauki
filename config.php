@@ -1,6 +1,6 @@
 <?php
-// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 11.06.2026]
-$host="127.0.0.1";
+
+$host="localhost";
 $user="root";
 $password="";
 $dbname="LearnIt";

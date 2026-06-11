@@ -80,7 +80,6 @@ include 'header.php';
             <h3 style="text-align: center; border-bottom: none; margin-bottom: 30px;">Popularne zestawy</h3>
             <div class="sets-grid">
                 <?php
-                // Wykorzystujemy to samo zapytanie, by pokazać gościom najpopularniejsze treści
                 $sql_popular_guest = "SELECT z.id_zestawu, z.tytul, z.liczba_fiszek, k.nazwa AS kategoria_nazwa 
                                       FROM zestaw z 
                                       JOIN kategoria k ON z.id_kategorii = k.id_kategorii 
@@ -97,7 +96,6 @@ include 'header.php';
                         echo '</div>';
                     }
                 } else {
-                    // Komunikat zachęcający do zostania pierwszym twórcą
                     echo '<p class="empty-state">System jeszcze nie posiada zestawów. <a href="register.php" style="color: var(--primary-color); font-weight: bold;">Zarejestruj się</a> i stwórz pierwszy!</p>';
                 }
                 ?>

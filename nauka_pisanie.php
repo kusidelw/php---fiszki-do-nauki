@@ -85,7 +85,7 @@ $fiszki_json = json_encode($fiszki);
         <script>
     const bazaFiszek = <?php echo $fiszki_json; ?>;
     let pulaRundy = [...bazaFiszek];
-    let runda = 1; // 1 = widzi definicję, wpisuje pojęcie | 2 = widzi pojęcie, wpisuje definicję
+    let runda = 1; 
     let obecnyIndeks = 0;
 
     const tekstPytania = document.getElementById('tekst-pytania');
@@ -106,7 +106,6 @@ $fiszki_json = json_encode($fiszki);
                 runda = 2;
                 pulaRundy = [...bazaFiszek];
                 obecnyIndeks = 0;
-                // Usunięto irytujący alert - przejście jest teraz płynne i ciche!
                 ustawPytanie();
             } else {
                 panelPytania.classList.add('hidden');
@@ -125,7 +124,6 @@ $fiszki_json = json_encode($fiszki);
         formOdpowiedz.querySelector('button').classList.remove('hidden');
         feedbackPanel.classList.add('hidden');
         
-        // Domyślnie ukrywamy pasek ze szczegółami błędu
         feedbackSzczegoly.classList.add('hidden'); 
 
         if (runda === 1) {
@@ -138,7 +136,6 @@ $fiszki_json = json_encode($fiszki);
             tekstPytania.innerText = pulaRundy[obecnyIndeks].pojecie;
         }
         
-        // Automatyczne ustawienie kursora w polu tekstowym (żeby nie trzeba było za każdym razem klikać myszką)
         inputOdpowiedz.focus();
     }
 
@@ -161,7 +158,6 @@ $fiszki_json = json_encode($fiszki);
             feedbackStatus.innerText = "Doskonale! Poprawna odpowiedź.";
             feedbackStatus.className = "success-msg";
             feedbackSzczegoly.innerText = "";
-            // Jeśli sukces, to stanowczo ukrywamy ramkę ze szczegółami
             feedbackSzczegoly.classList.add('hidden'); 
             pulaRundy.splice(obecnyIndeks, 1);
         } else {
@@ -169,7 +165,6 @@ $fiszki_json = json_encode($fiszki);
             feedbackStatus.className = "error-msg";
             let oczekiwana = runda === 1 ? pulaRundy[obecnyIndeks].pojecie : pulaRundy[obecnyIndeks].definicja;
             feedbackSzczegoly.innerText = "Twoja odpowiedź: '" + inputOdpowiedz.value + "'. Prawidłowa to: '" + oczekiwana + "'.";
-            // Jeśli błąd, zdejmujemy ukrycie, żeby pokazać czerwoną ramkę
             feedbackSzczegoly.classList.remove('hidden'); 
             obecnyIndeks++;
         }

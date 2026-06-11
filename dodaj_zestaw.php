@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Ochrona przed niezalogowanymi
 if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true) {
     header("Location: login.php");
     exit;

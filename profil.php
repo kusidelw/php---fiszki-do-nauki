@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-// Ochrona przed niezalogowanymi
 if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true) {
     header("Location: login.php");
     exit;
@@ -13,18 +12,16 @@ if (!isset($_SESSION['zalogowany']) || $_SESSION['zalogowany'] !== true) {
 $id_uz = $_SESSION['id_uzytkownika'];
 $komunikat = '';
 
-// --- AKCJA 1: USUWANIE ZESTAWU ---
+
 if (isset($_GET['usun_zestaw'])) {
     $id_do_usuniecia = intval($_GET['usun_zestaw']);
-    // Usuwamy zestaw tylko, jeśli należy do zalogowanego użytkownika (zabezpieczenie!)
     $sql_usun = "DELETE FROM zestaw WHERE id_zestawu = $id_do_usuniecia AND id_uzytkownika = $id_uz";
     if (mysqli_query($conn, $sql_usun)) {
         header("Location: profil.php");
         exit;
     }
 }
-
-// --- AKCJA 2: AKTUALIZACJA PROFILU ---
+-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) {
     $imie = mysqli_real_escape_string($conn, trim($_POST['imie']));
     $nazwisko = mysqli_real_escape_string($conn, trim($_POST['nazwisko']));
@@ -32,10 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) 
     $telefon = mysqli_real_escape_string($conn, trim($_POST['telefon']));
     $nowe_haslo = trim($_POST['nowe_haslo']);
 
-    // Aktualizujemy imię w sesji, żeby nagłówek od razu się zmienił
+  
     $_SESSION['imie'] = $imie;
 
-    // Sprawdzamy, czy użytkownik chce zmienić hasło
+  
     if (!empty($nowe_haslo)) {
         $hashed = password_hash($nowe_haslo, PASSWORD_DEFAULT);
         $sql_upd = "UPDATE uzytkownik SET imie='$imie', nazwisko='$nazwisko', email='$email', telefon='$telefon', haslo='$hashed' WHERE id_uzytkownika=$id_uz";
@@ -50,12 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aktualizuj_profil'])) 
     }
 }
 
-// Pobieranie aktualnych danych użytkownika, aby wypełnić formularz
 $sql_dane = "SELECT * FROM uzytkownik WHERE id_uzytkownika = $id_uz";
 $res_dane = mysqli_query($conn, $sql_dane);
 $uzytkownik = mysqli_fetch_assoc($res_dane);
 
-// Pobieranie zestawów użytkownika
+
 $sql_moje_zestawy = "SELECT z.id_zestawu, z.tytul, z.liczba_fiszek, k.nazwa AS kategoria_nazwa 
                      FROM zestaw z 
                      JOIN kategoria k ON z.id_kategorii = k.id_kategorii 

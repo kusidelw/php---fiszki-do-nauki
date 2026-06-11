@@ -1,5 +1,5 @@
 <?php
-// Upewniamy się, że sesja jest wystartowana, by móc z niej czytać
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <li><a href="fiszki.php">Fiszki</a></li>
             
             <?php 
-            // Magia dynamicznego nagłówka!
+            
             if(isset($_SESSION['zalogowany']) && $_SESSION['zalogowany'] === true): 
             ?>
                 <?php if(isset($_SESSION['id_roli']) && $_SESSION['id_roli'] == 1): ?>
