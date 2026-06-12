@@ -1,5 +1,5 @@
 <?php
-// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 11.06.2026]
+// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 12.06.2026]
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -65,7 +65,7 @@ if (file_exists('install.lock')) {
             <p>Podaj dane do połączenia z serwerem bazy danych MySQL (zazwyczaj jest to panel XAMPP):</p>
             <form method='post' action='install.php?step=2'>
                 <label>Serwer (Host):</label>
-                <input type='text' name='host' value='localhost' required>
+                <input type='text' name='host' value='127.0.0.1' required>
                 
                 <label>Użytkownik (User):</label>
                 <input type='text' name='user' value='root' required>
@@ -81,39 +81,35 @@ if (file_exists('install.lock')) {
             break;
 
         case 2:
-            $host = $_POST['host'] ?? 'localhost';
+            $host = $_POST['host'] ?? '127.0.0.1';
             $user = $_POST['user'] ?? 'root';
             $passwd = $_POST['passwd'] ?? '';
             $dbname = $_POST['dbname'] ?? 'LearnIt';
 
             $file = fopen($config_file, "w");
             $config_kod = "<?php\n"
-                        . "// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 11.06.2026]\n"
+                        . "// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 12.06.2026]\n"
                         . "\$host=\"$host\";\n"
                         . "\$user=\"$user\";\n"
                         . "\$password=\"$passwd\";\n"
                         . "\$dbname=\"$dbname\";\n\n"
-                        . "\$conn = mysqli_connect(\$host, \$user, \$password);\n"
+                        . "\$conn = mysqli_connect(\$host, \$user, \$password, \$dbname);\n"
                         . "if (!\$conn) { die(\"Błąd połączenia z serwerem: \" . mysqli_connect_error()); }\n"
-                        . "mysqli_select_db(\$conn, \$dbname);\n"
                         . "mysqli_set_charset(\$conn, \"utf8\");\n"
                         . "?>";
             
             if (fwrite($file, $config_kod)) {
                 echo "<p class='success'>Krok 2: Plik konfiguracyjny został nadpisany prawidłowymi danymi.</p>";
                 
+                // Próba połączenia z serwerem bazodanowym
                 $link = mysqli_connect($host, $user, $passwd);
                 if (!$link) {
                     echo "<p class='error'>Błąd: Dane dostępowe są niepoprawne. Nie można połączyć z MySQL.</p>";
                     echo "<button class='btn-action' onclick=\"window.location.href='install.php?step=1'\">&larr; Wróć i popraw dane</button>";
                 } else {
-                    mysqli_query($link, "DROP DATABASE IF EXISTS `$dbname`");
-                    if (mysqli_query($link, "CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci")) {
-                        echo "<p>✅ Pusta baza danych <b>$dbname</b> została wygenerowana na serwerze.</p>";
-                        echo "<button class='btn-action' onclick=\"window.location.href='install.php?step=3'\">Krok 3: Wygeneruj tabele &rarr;</button>";
-                    } else {
-                        echo "<p class='error'>Błąd tworzenia bazy: " . mysqli_error($link) . "</p>";
-                    }
+                    // Na serwerach studenckich często baza jest już stworzona, wyczyszczenie tabel robimy w kroku 3
+                    echo "<p class='success'>✅ Połączenie z serwerem bazodanowym przebiegło pomyślnie.</p>";
+                    echo "<button class='btn-action' onclick=\"window.location.href='install.php?step=3'\">Krok 3: Wygeneruj tabele &rarr;</button>";
                 }
             } else {
                 echo "<p class='error'>Błąd zapisu pliku <code>$config_file</code>.</p>";
@@ -122,15 +118,21 @@ if (file_exists('install.lock')) {
             break;
 
         case 3:
-            require_once 'config.php';
-            global $conn; 
+            // Ładujemy plik konfiguracyjny i upewniamy się, że połączenie globalne jest widoczne
+            require 'config.php';
+            
             echo "<p>Tworzenie tabel w bazie <b>$dbname</b>:</p>";
+
+            // Czyszczenie starych struktur z uwzględnieniem kluczy obcych (zapobiega błędom reinstalacji)
+            mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 0");
+            mysqli_query($conn, "DROP TABLE IF EXISTS fiszka, zestaw, kategoria, uzytkownik, rola");
+            mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1");
 
             $create = [
                 "CREATE TABLE rola (
                     id_roli INT PRIMARY KEY AUTO_INCREMENT,
                     nazwa VARCHAR(30) NOT NULL UNIQUE
-                ) ENGINE=InnoDB",
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci",
                 
                 "CREATE TABLE uzytkownik (
                     id_uzytkownika INT PRIMARY KEY AUTO_INCREMENT,
@@ -144,12 +146,12 @@ if (file_exists('install.lock')) {
                     data_urodzenia DATE,
                     czy_aktywny BOOLEAN DEFAULT TRUE,
                     FOREIGN KEY (id_roli) REFERENCES rola(id_roli)
-                ) ENGINE=InnoDB",
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci",
 
                 "CREATE TABLE kategoria (
                     id_kategorii INT PRIMARY KEY AUTO_INCREMENT,
                     nazwa VARCHAR(50) NOT NULL UNIQUE
-                ) ENGINE=InnoDB",
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci",
 
                 "CREATE TABLE zestaw (
                     id_zestawu INT PRIMARY KEY AUTO_INCREMENT,
@@ -161,7 +163,7 @@ if (file_exists('install.lock')) {
                     liczba_fiszek INT DEFAULT 0,
                     FOREIGN KEY (id_kategorii) REFERENCES kategoria(id_kategorii) ON DELETE CASCADE,
                     FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownik(id_uzytkownika) ON DELETE CASCADE
-                ) ENGINE=InnoDB",
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci",
 
                 "CREATE TABLE fiszka (
                     id_fiszki INT PRIMARY KEY AUTO_INCREMENT,
@@ -169,7 +171,7 @@ if (file_exists('install.lock')) {
                     pojecie VARCHAR(255) NOT NULL,
                     definicja TEXT NOT NULL,
                     FOREIGN KEY (id_zestawu) REFERENCES zestaw(id_zestawu) ON DELETE CASCADE
-                ) ENGINE=InnoDB"
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci"
             ];
 
             foreach ($create as $i => $sql) {
@@ -184,8 +186,7 @@ if (file_exists('install.lock')) {
             break;
 
         case 4:
-            require_once 'config.php';
-            global $conn;
+            require 'config.php';
             ini_set('max_execution_time', 300);
 
             mysqli_query($conn, "INSERT INTO rola (id_roli, nazwa) VALUES (1, 'admin'), (2, 'user'), (3, 'guest')");
@@ -197,7 +198,6 @@ if (file_exists('install.lock')) {
             $hashed_admin = password_hash('admin123', PASSWORD_DEFAULT);
             mysqli_query($conn, "INSERT INTO uzytkownik (id_roli, login, haslo, email, imie, nazwisko, czy_aktywny) 
                                  VALUES (1, 'admin', '$hashed_admin', 'admin@learnit.pl', 'Admin', 'Główny', 1)");
-
 
             $slowka = [];
             if (($handle = fopen("slowka.csv", "r")) !== FALSE) {
@@ -254,7 +254,6 @@ if (file_exists('install.lock')) {
                 }
             }
 
-      
             file_put_contents('install.lock', 'Zabezpieczenie przed nadpisaniem bazy. Aby ponownie uruchomic instalator, usun ten plik z serwera.');
 
             echo "<div class='success'>

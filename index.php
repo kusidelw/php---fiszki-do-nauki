@@ -1,3 +1,20 @@
+
+<?php
+// Fragment wygenerowany przy użyciu narzędzia sztucznej inteligencji: Gemini, gemini.google.com [data dostępu: 12.06.2026]
+
+// --- AUTOMATYCZNY DETEKTOR INSTALACJI ---
+if (!file_exists('install.lock')) {
+    header("Location: install.php?step=0");
+    exit;
+}
+// ----------------------------------------
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'config.php';
+include 'header.php'; 
+?>
 <?php
 // Sprawdzamy, czy sesja już istnieje, zanim ją wystartujemy
 if (session_status() === PHP_SESSION_NONE) {
